@@ -71,10 +71,10 @@ def shop_trip() -> None:
 
         if customer.money >= cheapest_total:
             print(f"{customer.name} rides to {chosen_shop.name}\n")
-            
+
             chosen_shop.print_receipt(customer.name, customer.product_cart)
             customer.money = customer.money - cheapest_total
-            
+
             print(f"{customer.name} rides home")
             print(f"{customer.name} now has {customer.money} dollars\n")
         else:
