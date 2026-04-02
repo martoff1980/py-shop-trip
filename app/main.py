@@ -5,6 +5,13 @@ from app.shop import Shop
 from app.utils import distance, travel_cost
 
 
+def print_not_enough_money(customer: any) -> None:
+    print(
+        f"{customer.name} "
+        f"doesn't have enough money to make a purchase in any shop"
+    )
+
+
 def shop_trip() -> None:
     current_dir = os.path.dirname(os.path.abspath(__file__))
     config_path = os.path.join(current_dir, "config.json")
@@ -21,7 +28,6 @@ def shop_trip() -> None:
         shop_costs = []
 
         for shop in shops:
-            # Проверяем, есть ли все нужные товары в магазине
             if all(item in shop.products for item in customer.product_cart):
                 dist_to_shop = distance(customer.location, shop.location)
                 dist_home = distance(shop.location, customer.location)
@@ -54,10 +60,7 @@ def shop_trip() -> None:
                     f"cannot buy all products in {shop.name}"
                 )
         if not shop_costs:
-            print(
-                f"{customer.name} "
-                f"doesn't have enough money to make a purchase in any shop"
-            )
+            print_not_enough_money(customer)
             continue
 
         shop_costs.sort(key=lambda x: x[0])
@@ -76,12 +79,10 @@ def shop_trip() -> None:
             customer.money = customer.money - cheapest_total
 
             print(f"{customer.name} rides home")
-            print(f"{customer.name} now has {customer.money} dollars\n")
+            print(f"{customer.name} now has {customer.money:.2f} dollars\n")
         else:
-            print(
-                f"{customer.name} "
-                f"doesn't have enough money to make a purchase in any shop"
-            )
+            print_not_enough_money(customer)
 
 
-shop_trip()
+if __name__ == "__main__":
+    shop_trip()
